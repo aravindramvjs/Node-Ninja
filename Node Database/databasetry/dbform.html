@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<!--====form section start====-->
+<div class="user-detail">
+    <h2>Create User Data</h2>
+    <form action="/users/create" method="POST">
+          <label>Full Name</label>
+          <input type="text" placeholder="Enter Full Name" name="fullName" required>
+          <label>Email Address</label>
+          <input type="email" placeholder="Enter Email Address" name="emailAddress" required>
+          <label>City</label>
+          <input type="city" placeholder="Enter Full City" name="city" required>
+          <label>Country</label>
+          <input type="text" placeholder="Enter Full Country" name="country" required>
+          <button type="submit">Submit</button>
+        </div>
+</div>
+<!--====form section ends====-->
+</body>
+
+<script>
+    var express = require('express');
+    var router = express.Router();
+    var db=require('../database');
+    router.get('/form', function(req, res, next) { 
+    res.render('users'); 
+    });
+    router.post('/create', function(req, res, next) {
+    
+    // store all the user input data
+    const userDetails=req.body;
+    
+    // insert user data into users table
+    var sql = 'INSERT INTO users SET ?';
+    db.query(sql, userDetails,function (err, data) { 
+        if (err) throw err;
+            console.log("User dat is inserted successfully "); 
+    });
+    res.redirect('/users/form');  // redirect to user form page after inserting the data
+    }); 
+    module.exports = router;
+</script>
+</html>
